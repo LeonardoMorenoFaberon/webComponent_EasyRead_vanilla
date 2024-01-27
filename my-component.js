@@ -25,39 +25,64 @@ class MyComponent extends HTMLElement {
     }
   
     //---------------------------------------------------------------------------------------------  
-    connectedCallback(){
-      fetch('template.html')
-      .then(response => response.text())
-      .then(html => {
-        // Store the template HTML
-        this._template = html;
+    // connectedCallback(){
+    //   fetch('template.html')
+    //   .then(response => response.text())
+    //   .then(html => {
+    //     // Store the template HTML
+    //     this._template = html;
 
-        // Initialize the component with the input parameter
-        // this._render();
+    //     // Initialize the component with the input parameter
+    //     // this._render();
 
-        this.shadowRoot.appendChild( this.getTemplate(this._template).content )
+    //     this.shadowRoot.appendChild( this.getTemplate(this._template).content )
         
+    //     this.miComponenteP = this.shadowRoot.querySelector('p');
+    //     this.miComponenteH1 = this.shadowRoot.querySelector('h1');
+    //     this.connectedCallbackEjecutado =  true;
+    //   })
+    //   .then( ()=> {
+    //                this.mensaje != ''? this.miComponenteP.innerText  = this.mensaje : ''; 
+    //                this.titulo  != ''? this.miComponenteH1.innerText = this.titulo  : '';
+    //                } )
+      
+    //   // .then(templateObtenido=>{this.shadowRoot.appendChild(templateObtenido.content)})
+    //   .catch(error => console.error('Error fetching template:', error));
+
+    //   // this._render();
+      
+    //   console.log('connectedCallback')
+
+    // }
+    //---------------------------------------------------------------------------------------------
+    async connectedCallback() {
+    
+      console.log('connectedCallback');
+      
+      try {
+        const response = await fetch('template.html');
+        const html = await response.text();
+    
+        this._template = html;
+        this.shadowRoot.appendChild(this.getTemplate(this._template).content);
+    
         this.miComponenteP = this.shadowRoot.querySelector('p');
         this.miComponenteH1 = this.shadowRoot.querySelector('h1');
-        this.connectedCallbackEjecutado =  true;
-      })
-      .then( ()=> {
-                   this.mensaje != ''? this.miComponenteP.innerText  = this.mensaje : ''; 
-                   this.titulo  != ''? this.miComponenteH1.innerText = this.titulo  : '';
-                   } )
-      
-      // .then(templateObtenido=>{this.shadowRoot.appendChild(templateObtenido.content)})
-      .catch(error => console.error('Error fetching template:', error));
-
-      // this._render();
-      
-      console.log('connectedCallback')
-
-    }
-
+        this.connectedCallbackEjecutado = true;
     
-
-    //---------------------------------------------------------------------------------------------
+        if (this.mensaje !== '') {
+          this.miComponenteP.innerText = this.mensaje;
+        }
+        if (this.titulo !== '') {
+          this.miComponenteH1.innerText = this.titulo;
+        }
+      } catch (error) {
+        console.error('Error fetching template:', error);
+      }
+    
+    }
+    //----------------------------------------------------------------------------------------------
+    
     static get observedAttributes(){
       //obsrvador de forma constante.
       // console.log(`${this.identificador} ha cambiado`);
@@ -76,15 +101,12 @@ class MyComponent extends HTMLElement {
       if(actualVal === "mensaje"  ){
          this.mensaje = newVal;
 
-          this.miComponenteP = this.shadowRoot.querySelector('p');
-          // this.miComponenteP.innerText = this.mensaje
           if(this.connectedCallbackEjecutado){ this.miComponenteP.innerText = this.mensaje };
 
       } 
       if(actualVal === "titulo"  ){
           this.titulo   =  newVal
           
-          // this.miComponenteH1 = this.shadowRoot.querySelector('h1');
           if(this.connectedCallbackEjecutado){ this.miComponenteH1.innerText = this.titulo; }
 
       } 
