@@ -1,7 +1,7 @@
 # webComponent_EasyRead_vanilla
 
-##let miComponente = document.getElementsByTagName('my-component')[0]
+## let miComponente = document.getElementsByTagName('my-component')[0]
 
-##miComponente.setAttribute('mensaje' , 'aver si cambias');
+## miComponente.setAttribute('mensaje' , 'aver si cambias');
 
-##miComponente.setAttribute('titulo' , 'Cambiando titulo Leo!!!');
+## miComponente.setAttribute('titulo' , 'Cambiando titulo Leo!!!');
