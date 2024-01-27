@@ -6,7 +6,10 @@ class MyComponent extends HTMLElement {
   
       // Create a shadow DOM
       this.attachShadow({ mode: 'open' });
-  
+      // this.miComponenteP
+      this.connectedCallbackEjecutado =  false;
+      this.titulo   = '';
+      this.mensaje  = '';
       // Define a property for the input parameter  
       console.log('constructor')
 
@@ -36,11 +39,17 @@ class MyComponent extends HTMLElement {
         
         this.miComponenteP = this.shadowRoot.querySelector('p');
         this.miComponenteH1 = this.shadowRoot.querySelector('h1');
+        this.connectedCallbackEjecutado =  true;
       })
+      .then( ()=> {
+                   this.mensaje != ''? this.miComponenteP.innerText  = this.mensaje : ''; 
+                   this.titulo  != ''? this.miComponenteH1.innerText = this.titulo  : '';
+                   } )
+      
       // .then(templateObtenido=>{this.shadowRoot.appendChild(templateObtenido.content)})
       .catch(error => console.error('Error fetching template:', error));
 
-      this._render();
+      // this._render();
       
       console.log('connectedCallback')
 
@@ -67,15 +76,16 @@ class MyComponent extends HTMLElement {
       if(actualVal === "mensaje"  ){
          this.mensaje = newVal;
 
-          // this.miComponenteP = this.shadowRoot.querySelector('p');
-          this.miComponenteP.innerText = this.mensaje;
+          this.miComponenteP = this.shadowRoot.querySelector('p');
+          // this.miComponenteP.innerText = this.mensaje
+          if(this.connectedCallbackEjecutado){ this.miComponenteP.innerText = this.mensaje };
 
       } 
       if(actualVal === "titulo"  ){
           this.titulo   =  newVal
           
           // this.miComponenteH1 = this.shadowRoot.querySelector('h1');
-          this.miComponenteH1.innerText = this.titulo; 
+          if(this.connectedCallbackEjecutado){ this.miComponenteH1.innerText = this.titulo; }
 
       } 
       if(actualVal === "url"  ){
@@ -107,14 +117,14 @@ class MyComponent extends HTMLElement {
     
     //---------------------------------------------------------------------------------------------
       // Render the component with the current state
-      // _render() {
-      //   // Check if the template is available
-      //   if (this._template) {
-      //     // Access the shadow DOM content and update it with the template content
-      //     this.shadowRoot.innerHTML = this._template.replace('{{message}}', this._message);
+      _render() {
+        // Check if the template is available
+        if (this._template) {
+          // Access the shadow DOM content and update it with the template content
+          this.shadowRoot.innerHTML = this._template.replace('{{message}}', this._message);
      
-      //   }
-      // }
+        }
+      }
     
 
 
